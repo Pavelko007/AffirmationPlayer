@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -9,32 +10,14 @@ namespace AffirmationPlayer
     public class AffirmationPlayer : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI affirmationText;
-
+        [SerializeField] private TMP_InputField affirmationInputField;
 
         private List<string> affirmations;
-
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[stringRandom.Next(s.Length)]).ToArray());
-        }
-
-        private static Random stringRandom = new Random();
         private Stack<int> affirmationIndexStack;
 
         public void Play()
         {
-            void GenerateRandomAffirmations()
-            {
-                affirmations = new List<string>();
-                for (int i = 0; i < 10; i++)
-                {
-                    affirmations.Add(i + 1 + "_" + RandomString(30));
-                }
-            }
-
-            GenerateRandomAffirmations();
+            InitFromString(affirmationInputField.text);
 
             GenerateRandomIndexSequence();
         
@@ -48,9 +31,9 @@ namespace AffirmationPlayer
             affirmationIndexStack = new Stack<int>(shuffle);
         }
 
-        public void SetAffirmations(List<string> affirmations)
+        private void InitFromString(string affirmationLines)
         {
-            this.affirmations = affirmations.ToList();
+            affirmations = affirmationLines.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         public void ShowNext()
