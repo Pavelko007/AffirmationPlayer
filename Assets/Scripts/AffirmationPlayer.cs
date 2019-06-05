@@ -10,14 +10,20 @@ namespace AffirmationPlayer
     public class AffirmationPlayer : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI affirmationText;
-        [SerializeField] private TMP_InputField affirmationInputField;
-
-        private List<string> affirmations;
+        
+        [SerializeField] private Affirmations affirmations;
+        
         private Stack<int> affirmationIndexStack;
+
+        public List<string> Affirmations
+        {
+            get { return affirmations.affirmationsList; }
+            set { affirmations.affirmationsList = value; }
+        }
 
         public void Play()
         {
-            InitFromString(affirmationInputField.text);
+            affirmations.LoadLines();
 
             GenerateRandomIndexSequence();
         
@@ -27,14 +33,10 @@ namespace AffirmationPlayer
         private void GenerateRandomIndexSequence()
         {
             var shuffleRandom = new Random();
-            var shuffle = Enumerable.Range(0, affirmations.Count).OrderBy(a => shuffleRandom.NextDouble());
+            var shuffle = Enumerable.Range(0, Affirmations.Count).OrderBy(a => shuffleRandom.NextDouble());
             affirmationIndexStack = new Stack<int>(shuffle);
         }
-
-        private void InitFromString(string affirmationLines)
-        {
-            affirmations = affirmationLines.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).ToList();
-        }
+        
 
         public void ShowNext()
         {
@@ -44,7 +46,8 @@ namespace AffirmationPlayer
             }
         
             var nextIndex = affirmationIndexStack.Pop();
-            affirmationText.text = affirmations[nextIndex];
+            affirmationText.text = Affirmations[nextIndex];
         }
+      
     }
 }
