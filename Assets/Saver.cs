@@ -9,12 +9,17 @@ public class Saver : MonoBehaviour {
     private Affirmations affirmations;
     private string savePath;
  
-    void Start () 
+    void Awake () 
     {
         affirmations = GetComponent<Affirmations>();
         savePath = Application.persistentDataPath + "/gamesave.save";
     }
- 
+
+    void Start()
+    {
+        LoadData();
+    }
+    
     public void SaveData()
     {
         affirmations.LoadLines();
