@@ -12,7 +12,7 @@ public class Saver : MonoBehaviour {
     void Awake () 
     {
         affirmations = GetComponent<Affirmations>();
-        savePath = Application.persistentDataPath + "/gamesave.save";
+        savePath = Application.persistentDataPath + "/data";
     }
 
     void Start()
